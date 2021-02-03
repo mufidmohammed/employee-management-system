@@ -5,7 +5,6 @@ require('process/db_connect.php');
 
 if (isset($_POST['submit'])) {
 
-    // echo eid and password on the screen
     $eid = $_POST['eid'];
     $pwd = $_POST['pwd'];
       
