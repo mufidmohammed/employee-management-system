@@ -2,24 +2,49 @@
 
 require('process/db_connect.php');
 
-$sql = "SELECT name, password FROM alogin";
-$query = mysqli_query($conn, $sql);
+// $servername = "localhost";
+// $username = "root";
+// $password = "";
+// $dbname = "ems";
 
-mysqli_close($conn);
+// $conn = mysqli_connect($servername, $username, $password, $dbname);
+
+// if (mysqli_connect_error()) {
+//     die("Unable to connect to database : " . mysqli_connect_error());
+// }
+
+$sql = "SELECT * FROM `employee` WHERE 1";
+$result = mysqli_query($conn, $sql);
+
+if (!$result) {
+    die("Error occured");
+}
+
+while ($row = mysqli_fetch_assoc($result)) {
+    echo "<br>";
+    echo "Name: " . $row['firstName'] . " " . $row['lastName'] . "<br>";
+    echo "Email: " . $row['email'] . "<br>";
+    echo "Password: " . $row['password'] . "<br>";
+}
 
 if (isset($_POST['submit'])) {    
 
     $name = $_POST['name'];
     $pwd = $_POST['pwd'];
 
-    if ($query['name'] == $name && $pwd['age'] == $pwd) {
-        header("Location: admin_page.php");
-    }
+    $sql = "SELECT name, password FROM alogin WHERE name = $name AND password = $pwd";
 
+    if (mysqli_query($conn, $sql)) {
+        header("Location: admin_page.php");
+    } else {
+        echo "Connection error";
+    }
 }
 
+mysqli_close($conn);
 
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -53,7 +78,7 @@ if (isset($_POST['submit'])) {
         <div class="row h-50"></div>
         <h2>Welcome</h2>
         <div class="row text-center col-sm-6">
-            <form action="elogin.php" method="POST">
+            <form action="alogin.php" method="POST">
                 <div class="form-group">
                 <input type="text" class="form-control" placeholder="name" name="name">
                 </div>

@@ -2,27 +2,38 @@
 
 require('process/db_connect.php');
 
-$sql = "SELECT name, password FROM employee";
+$sql = "SELECT * FROM `employee` WHERE 1";
 $result = mysqli_query($conn, $sql);
 
-mysqli_close($conn);
+if (!$result) {
+    die("Error occured");
+}
+
+$row = mysqli_fetch_assoc($result);
+$password = $row['password'];
 
 if (isset($_POST['submit'])) {    
 
-    $name = $_POST['name'];
+    $eid = $_POST['eid'];
     $pwd = $_POST['pwd'];
 
-    while ($row = mysqli_fetch_assoc($result)) {
-        if ($name  == $row['name'] && $pwd == $row['password']) {
-            header("Location: employee_page.php");
-        }
+    echo "User ID is: " . $eid . "<br>";
+    echo "User Password is: " . $pwd . "<br>";
+    echo "User Password is: " . $password . "<br>";    
+    $sql = "SELECT `id`, `password` FROM `employee` WHERE `password` = $pwd";
+
+    if (mysqli_query($conn, $sql)) {
+        header("Location: employee_page.php");
+    } else {
+        echo "An error occured.";
     }
 
 }
 
-
+mysqli_close($conn);
 
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -58,7 +69,7 @@ if (isset($_POST['submit'])) {
         <div class="row text-center col-sm-6">
             <form action="./elogin.php" method="POST">
                 <div class="form-group">
-                <input type="text" class="form-control" placeholder="Employee name" name="name">
+                <input type="number" class="form-control" placeholder="Employee ID" name="eid">
                 </div>
                 <br>
                 <div class="form-group">
