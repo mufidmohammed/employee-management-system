@@ -2,37 +2,12 @@
 
 require('process/db_connect.php');
 
-// $servername = "localhost";
-// $username = "root";
-// $password = "";
-// $dbname = "ems";
-
-// $conn = mysqli_connect($servername, $username, $password, $dbname);
-
-// if (mysqli_connect_error()) {
-//     die("Unable to connect to database : " . mysqli_connect_error());
-// }
-
-$sql = "SELECT * FROM `employee` WHERE 1";
-$result = mysqli_query($conn, $sql);
-
-if (!$result) {
-    die("Error occured");
-}
-
-while ($row = mysqli_fetch_assoc($result)) {
-    echo "<br>";
-    echo "Name: " . $row['firstName'] . " " . $row['lastName'] . "<br>";
-    echo "Email: " . $row['email'] . "<br>";
-    echo "Password: " . $row['password'] . "<br>";
-}
-
 if (isset($_POST['submit'])) {    
 
     $name = $_POST['name'];
     $pwd = $_POST['pwd'];
 
-    $sql = "SELECT name, password FROM alogin WHERE name = $name AND password = $pwd";
+    $sql = "SELECT `id` FROM `alogin` WHERE `name` = '$name' AND `password` = '$pwd'";
 
     if (mysqli_query($conn, $sql)) {
         header("Location: admin_page.php");
@@ -84,7 +59,7 @@ mysqli_close($conn);
                 </div>
                 <br>
                 <div class="form-group">
-                  <input type="password" class="form-control" placeholder="password" name="pwd">
+                  <input type="password" class="form-control" placeholder="password" name="pwd" required="">
                 </div>
 
                 <input type="submit" name="submit" value="Login" class="btn btn-primary">

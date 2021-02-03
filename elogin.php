@@ -2,25 +2,14 @@
 
 require('process/db_connect.php');
 
-$sql = "SELECT * FROM `employee` WHERE 1";
-$result = mysqli_query($conn, $sql);
 
-if (!$result) {
-    die("Error occured");
-}
+if (isset($_POST['submit'])) {
 
-$row = mysqli_fetch_assoc($result);
-$password = $row['password'];
-
-if (isset($_POST['submit'])) {    
-
+    // echo eid and password on the screen
     $eid = $_POST['eid'];
     $pwd = $_POST['pwd'];
-
-    echo "User ID is: " . $eid . "<br>";
-    echo "User Password is: " . $pwd . "<br>";
-    echo "User Password is: " . $password . "<br>";    
-    $sql = "SELECT `id`, `password` FROM `employee` WHERE `password` = $pwd";
+      
+    $sql = "SELECT * FROM `employee` WHERE `id` = '$eid' AND `password` = '$pwd'";
 
     if (mysqli_query($conn, $sql)) {
         header("Location: employee_page.php");
